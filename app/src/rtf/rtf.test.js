@@ -104,7 +104,7 @@ describe('RtfTest', () => {
   it('getAmountOfColumnThroughOfFirstChildOfTbodyTag()', () => {
     let rtf = new Rtf();
     let tableChildren = [
-      { name: 'thead' }, 
+      { name: 'thead' },
       {
         name: 'tbody',
         children: [
@@ -136,7 +136,7 @@ describe('RtfTest', () => {
 
   it('addReferenceTagInRtfCode()', () => {
     let rtf = new Rtf();
-    
+
     rtf.addOpeningTagInRtfCode('ll');
     rtf.addClosingFatherTagInRtfCode('ll');
     rtf.addOpeningTagInRtfCode('dd');
@@ -148,7 +148,7 @@ describe('RtfTest', () => {
 
   it('addOpeningTagInRtfCode()', () => {
     let rtf = new Rtf();
-    
+
     rtf.addOpeningTagInRtfCode('p');
     should(rtf.rtfContentReferences[0].content).be.equal('{\\pard ');
     should(rtf.rtfContentReferences[0].tag).be.true();
@@ -156,7 +156,7 @@ describe('RtfTest', () => {
 
   it('addClosingFatherTagInRtfCode()', () => {
     let rtf = new Rtf();
-    
+
     rtf.addClosingFatherTagInRtfCode('p');
     should(rtf.rtfContentReferences[0].content).be.equal('\\sb70\\par}');
     should(rtf.rtfContentReferences[0].tag).be.true();
@@ -189,6 +189,14 @@ describe('RtfTest', () => {
     const rtf = new Rtf();
 
     should(rtf.convertHtmlToRtf(html)).be.equal('{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard compara\\\'e7\\\'e3o\\sb70\\par}}');
+  });
+
+  it('Should convert anchor', () => {
+    const html = `<p>aa<a href="https://foo">bb</a></p>`;
+    const expectedRtf = `{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo"}{\\fldrslt  bb}}\\sb70\\par}}`;
+    const rtf = new Rtf();
+
+    should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
   });
 
   it('Should set correct space', () => {

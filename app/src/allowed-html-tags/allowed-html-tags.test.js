@@ -11,7 +11,7 @@ describe('AllowedHtmlTagsTest', () => {
   });
 
   describe('isKnowedTag', () => {
-    it.only('supports anchors', () => {
+    it('supports anchors', () => {
       should( AllowedHtmlTags.isKnowedTag( 'a' ) ).be.equal( true );
     });
   });
