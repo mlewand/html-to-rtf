@@ -31,6 +31,7 @@
   },
   "scripts": {
     "test": "gulp tests",
+    "test:debug": "mocha --inspect-brk -w ./app/src/**/*.test.js",
     "browser:build": "browserify ./main.js > ./app/browser/bundle.js",
     "browserify": "browserify",
     "publish": "npm run browser:build && npm publish",
