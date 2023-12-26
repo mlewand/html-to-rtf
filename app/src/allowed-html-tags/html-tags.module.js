@@ -30,6 +30,12 @@ module.exports = [
       closingRtf: '}'
    },
    {
+      opening: "a",
+      openingRtf: "{\\field{\\*\\fldinst HYPERLINK \"http://www.google.com/\"}{\\fldrslt ",
+      closing: "/a",
+      closingRtf: "}}",
+   },
+   {
       opening: 'font',
       openingRtf: '{',
       closing: '/font',

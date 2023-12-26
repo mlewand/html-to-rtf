@@ -9,4 +9,10 @@ describe('AllowedHtmlTagsTest', () => {
     should(AllowedHtmlTags.getRtfReferenceTag('notExists')).be.undefined();
     should(AllowedHtmlTags.getRtfReferenceTag('/notExists')).be.undefined();
   });
+
+  describe('isKnowedTag', () => {
+    it.only('supports anchors', () => {
+      should( AllowedHtmlTags.isKnowedTag( 'a' ) ).be.equal( true );
+    });
+  });
 });
