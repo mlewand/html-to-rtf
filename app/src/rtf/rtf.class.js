@@ -51,7 +51,7 @@ class Rtf {
   // Don't has a test
   readAllChildsInTag(fatherTag) {
     if (fatherTag.children != undefined) {
-      this.addOpeningTagInRtfCode(fatherTag.name);
+      this.addOpeningTagInRtfCode(fatherTag.name, fatherTag);
       this.ifExistsAttributesAddAllReferencesInRtfCode(fatherTag.attribs);
 
       if(fatherTag.name.toLowerCase() == 'table')
@@ -102,10 +102,14 @@ class Rtf {
     }
   }
 
-  addOpeningTagInRtfCode(tag) {
-    let value = AllowedHtmlTags.getRtfReferenceTag(tag);
+  addOpeningTagInRtfCode(tagName, elementInfo) {
+    let value = AllowedHtmlTags.getRtfReferenceTag(tagName);
     let space = '';
-    
+
+    if (typeof value === 'function') {
+      value = value(tagName, elementInfo);
+    }
+
     if (value) {
       if (value === ' ') {
         space = '';

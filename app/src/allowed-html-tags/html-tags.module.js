@@ -31,7 +31,15 @@ module.exports = [
    },
    {
       opening: "a",
-      openingRtf: "{\\field{\\*\\fldinst HYPERLINK \"http://www.google.com/\"}{\\fldrslt ",
+      /**
+       * @param {string} tagName Tag name of processed HTML element.
+       * @param {*} elementInfo Element instance from the Cheerio library.
+       * @returns {string} RTF code for opening tag.
+       */
+      openingRtf: (tagName, elementInfo) => {
+         const encodedUrl = encodeURI(elementInfo.attribs.href);
+         return `{\\field{\\*\\fldinst HYPERLINK "${ encodedUrl }"}{\\fldrslt `;
+      },
       closing: "/a",
       closingRtf: "}}",
    },
