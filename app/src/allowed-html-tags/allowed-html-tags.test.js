@@ -12,7 +12,7 @@ describe('AllowedHtmlTagsTest', () => {
 
   describe('isKnowedTag', () => {
     it('supports anchors', () => {
-      should( AllowedHtmlTags.isKnowedTag( 'a' ) ).be.equal( true );
+      should(AllowedHtmlTags.isKnowedTag('a')).be.equal(true);
     });
   });
 });
