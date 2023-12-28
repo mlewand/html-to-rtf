@@ -38,7 +38,7 @@ module.exports = [
        */
       openingRtf: (tagName, elementInfo) => {
          const encodedUrl = encodeURI(elementInfo.attribs.href);
-         return `{\\field{\\*\\fldinst HYPERLINK "${ encodedUrl }"}{\\fldrslt `;
+         return `{\\field{\\*\\fldinst HYPERLINK "${ encodedUrl }"}{\\fldrslt`;
       },
       closing: "/a",
       closingRtf: "}}",

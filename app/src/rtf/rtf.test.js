@@ -194,7 +194,7 @@ describe('RtfTest', () => {
   describe('Hyperlink conversion test', () => {
     it('Should convert basic anchor', () => {
       const html = '<p>aa<a href="https://foo">bb</a></p>';
-      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo"}{\\fldrslt  bb}}\\sb70\\par}}';
+      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo"}{\\fldrslt bb}}\\sb70\\par}}';
       const rtf = new Rtf();
 
       should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
@@ -202,7 +202,7 @@ describe('RtfTest', () => {
 
     it('Should properly convert anchor with double quote', () => {
       const html = '<p>aa<a href="https://foo&quot;bar">bb</a></p>';
-      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo%22bar"}{\\fldrslt  bb}}\\sb70\\par}}';
+      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo%22bar"}{\\fldrslt bb}}\\sb70\\par}}';
       const rtf = new Rtf();
 
       should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
@@ -210,7 +210,7 @@ describe('RtfTest', () => {
 
     it('Should properly convert anchor with percent character', () => {
       const html = '<p>aa<a href="https://foo%bar">bb</a></p>';
-      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo%25bar"}{\\fldrslt  bb}}\\sb70\\par}}';
+      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo%25bar"}{\\fldrslt bb}}\\sb70\\par}}';
       const rtf = new Rtf();
 
       should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
@@ -218,7 +218,7 @@ describe('RtfTest', () => {
 
     it('Should properly convert anchor with braces', () => {
       const html = '<p>aa<a href="https://foo{bar}">bb</a></p>';
-      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo%7Bbar%7D"}{\\fldrslt  bb}}\\sb70\\par}}';
+      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "https://foo%7Bbar%7D"}{\\fldrslt bb}}\\sb70\\par}}';
       const rtf = new Rtf();
 
       should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
@@ -226,7 +226,17 @@ describe('RtfTest', () => {
 
     it('Should properly convert anchor with at character', () => {
       const html = '<p>aa<a href="mailto://foo@bar.baz">bb</a></p>';
-      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "mailto://foo@bar.baz"}{\\fldrslt  bb}}\\sb70\\par}}';
+      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "mailto://foo@bar.baz"}{\\fldrslt bb}}\\sb70\\par}}';
+      const rtf = new Rtf();
+
+      should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
+    });
+
+    it('Should properly nest color styling added to a hyperlink', () => {
+      // Note that control word applying color `\cf1` should be inserted inside of a link.
+      // Otherwise it would cause the content following the link to be colored too.
+      const html = '<p>aa<a href="mailto://foo@bar.baz" style="color: #FF0000">bb</a>cc</p>';
+      const expectedRtf = '{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;\\red255\\green0\\blue0;}{\\pard aa{\\field{\\*\\fldinst HYPERLINK "mailto://foo@bar.baz"}{\\fldrslt \\cf1 bb}}cc\\sb70\\par}}';
       const rtf = new Rtf();
 
       should(rtf.convertHtmlToRtf(html)).be.equal(expectedRtf);
