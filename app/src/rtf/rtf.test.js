@@ -104,7 +104,7 @@ describe('RtfTest', () => {
   it('getAmountOfColumnThroughOfFirstChildOfTbodyTag()', () => {
     let rtf = new Rtf();
     let tableChildren = [
-      { name: 'thead' }, 
+      { name: 'thead' },
       {
         name: 'tbody',
         children: [
@@ -136,7 +136,7 @@ describe('RtfTest', () => {
 
   it('addReferenceTagInRtfCode()', () => {
     let rtf = new Rtf();
-    
+
     rtf.addOpeningTagInRtfCode('ll');
     rtf.addClosingFatherTagInRtfCode('ll');
     rtf.addOpeningTagInRtfCode('dd');
@@ -148,7 +148,7 @@ describe('RtfTest', () => {
 
   it('addOpeningTagInRtfCode()', () => {
     let rtf = new Rtf();
-    
+
     rtf.addOpeningTagInRtfCode('p');
     should(rtf.rtfContentReferences[0].content).be.equal('{\\pard ');
     should(rtf.rtfContentReferences[0].tag).be.true();
@@ -156,7 +156,7 @@ describe('RtfTest', () => {
 
   it('addClosingFatherTagInRtfCode()', () => {
     let rtf = new Rtf();
-    
+
     rtf.addClosingFatherTagInRtfCode('p');
     should(rtf.rtfContentReferences[0].content).be.equal('\\sb70\\par}');
     should(rtf.rtfContentReferences[0].tag).be.true();
@@ -203,4 +203,9 @@ describe('RtfTest', () => {
     should(rtf.convertHtmlToRtf(html)).be.equal('{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}Lorem {\\b IPSUM} dolor sit amet..}');
   });
 
+  it('Should not consume spacing between two formatted words', () => {
+    const html = "<p>aa <b>bb</b> <u>cc</u> dd</p>";
+    const rtf = new Rtf();
+    should(rtf.convertHtmlToRtf(html)).be.equal('{\\rtf1\\ansi\\deff0{\\fonttbl {\\f0\\fnil\\fcharset0 Calibri;}{\\f1\\fnil\\fcharset2 Symbol;}}{\\colortbl ;}{\\pard aa {\\b bb} {\\ul cc} dd\\sb70\\par}}');
+  });
 });
