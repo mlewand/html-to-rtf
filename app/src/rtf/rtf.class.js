@@ -105,7 +105,7 @@ class Rtf {
   addOpeningTagInRtfCode(tag) {
     let value = AllowedHtmlTags.getRtfReferenceTag(tag);
     let space = '';
-    
+
     if (value) {
       if (value === ' ') {
         space = '';
@@ -128,9 +128,18 @@ class Rtf {
   addContentOfTagInRtfCode(contentOfTag) {
     contentOfTag = MyString.removeCharacterOfEscapeInAllString(contentOfTag, '\n\t');
     contentOfTag = Character.asciiToRtfScape(contentOfTag);
+    const isWhitespace = MyString.hasOnlyWhiteSpace(contentOfTag);
 
-    if(contentOfTag != undefined && !MyString.hasOnlyWhiteSpace(contentOfTag))
-      this.rtfContentReferences.push({ content: contentOfTag, tag: false });
+    if(contentOfTag != undefined) {
+      const lastReference = this.rtfContentReferences[this.rtfContentReferences.length - 1];
+
+      // Whitespace should be ignored unless it's between any meaningful content, e.g.
+      // `<p><b>foo</b> <u>bar</u></p>`.
+      if ( !isWhitespace || ( lastReference && !lastReference.isWhitespace ) ) {
+        this.rtfContentReferences.push({ content: contentOfTag, tag: false });
+      }
+
+    }
   }
 
   setHighlightInRtf() {
